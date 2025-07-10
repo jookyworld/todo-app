@@ -19,6 +19,17 @@ export function useTodos() {
 
   //CREATE
   const addTodo = (text) => {
+    //빈칸 등록
+    if (!text) {
+      alert("할일을 입력해주세요!");
+      return;
+    }
+    //중복
+    if (todos.some((todo) => todo.text === text)) {
+      alert("이미 추가된 일입니다!");
+      return;
+    }
+
     const todo = { id: nextId.current, text, check: false }; //추가할 todo
     const updatedTodos = setTodos([todo, ...todos]); //setter 이용해 todo 추가
     setItem("todos", updatedTodos);
