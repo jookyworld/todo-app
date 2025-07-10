@@ -4,26 +4,18 @@ import { getItem, setItem } from "../utils/storage";
 export function useTodos() {
   const nextId = useRef(5);
 
-  //data
-  const [todos, setTodos] = useState([
-    { id: 1, text: "공부하기", check: true },
-    { id: 2, text: "운동하기", check: false },
-    { id: 3, text: "샤워하기", check: false },
-    { id: 4, text: "요리하기", check: false },
-  ]);
+  const [todos, setTodos] = useState(() =>
+    getItem("todos", [
+      { id: 1, text: "공부하기", check: true },
+      { id: 2, text: "운동하기", check: false },
+      { id: 3, text: "샤워하기", check: false },
+      { id: 4, text: "요리하기", check: false },
+    ])
+  );
 
-  // const [todos, setTodos] = useState(() =>
-  //   getItem("todos", [
-  //     { id: 1, text: "공부하기", check: true },
-  //     { id: 2, text: "운동하기", check: false },
-  //     { id: 3, text: "샤워하기", check: false },
-  //     { id: 4, text: "요리하기", check: false },
-  //   ])
-  // );
-
-  // useEffect(() => {
-  //   setStorage("todos", todos);
-  // }, [todos]);
+  useEffect(() => {
+    setItem("todos", todos);
+  }, [todos]);
 
   //CREATE
   const addTodo = (text) => {
