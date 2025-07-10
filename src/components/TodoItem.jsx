@@ -6,7 +6,7 @@ function TodoItem({ todo, toggleTodo, removeTodo }) {
           type="checkbox"
           onChange={() => toggleTodo(todo.id)}
           checked={todo.check}
-          className="w-5 h-5"
+          className="w-5 h-5 accent-purple-500 rounded focus:ring-2 focus:ring-purple-300"
         />
         <span className="text-xs text-gray-500 ml-2">
           {todo.check ? "완료" : "미완료"}
@@ -17,7 +17,7 @@ function TodoItem({ todo, toggleTodo, removeTodo }) {
       </div>
       <button
         onClick={() => removeTodo(todo.id)}
-        className="ml-4 text-red-500 hover:underline"
+        className="ml-4 text-sm text-red-500 hover:underline"
       >
         삭제
       </button>

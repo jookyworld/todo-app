@@ -10,15 +10,15 @@ function TodoForm({ addTodo }) {
 
   return (
     <>
-      <form onSubmit={Submit}>
+      <form onSubmit={Submit} className="flex justify-center gap-2 mt-4">
         <input
-          className="border-2 border-gray-300 rounded p-2"
+          className="border-2 border-gray-300 rounded p-2 flex-1"
           type="text"
           name="todo"
         />
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
           type="submit"
+          className="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold shadow hover:brightness-110 transition"
         >
           추가
         </button>
