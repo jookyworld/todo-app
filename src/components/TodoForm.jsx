@@ -1,14 +1,16 @@
 function TodoForm({ addTodo }) {
   // form(등록버튼) 처리하는 핸들러
   const Submit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //새로고침 방지
     const form = e.target;
     const text = form.todo.value.trim(); // 입력값의 앞뒤 공백 제거
-    if (!text) {
-      alert("할일을 입력해주세요!");
+
+    const result = addTodo(text); //addTodo 함수 호출 해서
+    if (!result.success) {
+      //결과
+      alert(result.message);
       return;
     }
-    addTodo(text);
     form.todo.value = ""; // 입력 후 입력창 비우기
   };
 

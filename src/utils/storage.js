@@ -19,5 +19,6 @@ export const getItem = (key, defaultValue) => {
     return defaultValue;
   } catch (e) {
     console.log(e);
+    return defaultValue;
   }
 };

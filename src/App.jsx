@@ -3,12 +3,12 @@ import TodoList from "./components/TodoList";
 import { useTodos } from "./hooks/useTodos";
 
 function App() {
-  const { todos, addTodo, removeTodo, toggleTodo } = useTodos();
+  const { todos, addTodo, removeTodo, toggleTodo } = useTodos(); //useTodos 훅을 통해 todos 상태와 관련 함수들을 가져옴
 
+  //하단 메시지
   const getTodoMessage = () => {
     const total = todos.length;
     const done = todos.filter((t) => t.check).length;
-
     if (total === 0) return "차근차근 ✍️";
     if (done === 0) return "할 일을 시작해 볼까요? 🔥";
     if (done < total * 0.5) return "조금 더 분발해볼까요? 💪";
@@ -17,6 +17,7 @@ function App() {
   };
 
   return (
+    //UI 렌더링
     <>
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-slate-200 to-slate-400">
         <div className="bg-white p-8 rounded-xl shadow-xl border border-gray-200 text-center">
@@ -29,7 +30,6 @@ function App() {
             </p>
           </header>
           <TodoForm addTodo={addTodo} />
-          {/* READ */}
           <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-inner">
             <TodoList
               todos={todos}
