@@ -4,7 +4,11 @@ function TodoForm({ addTodo }) {
     e.preventDefault();
     const form = e.target;
     const text = form.todo.value.trim(); // 입력값의 앞뒤 공백 제거
-    addTodo(form.todo.value);
+    if (!text) {
+      alert("할일을 입력해주세요!");
+      return;
+    }
+    addTodo(text);
     form.todo.value = ""; // 입력 후 입력창 비우기
   };
 
@@ -15,6 +19,7 @@ function TodoForm({ addTodo }) {
           className="border-2 border-gray-300 rounded p-2 flex-1"
           type="text"
           name="todo"
+          placeholder="할 일을 입력해주세요"
         />
         <button
           type="submit"

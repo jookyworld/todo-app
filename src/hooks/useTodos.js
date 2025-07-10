@@ -4,14 +4,7 @@ import { getItem, setItem } from "../utils/storage";
 export function useTodos() {
   const nextId = useRef(5);
 
-  const [todos, setTodos] = useState(() =>
-    getItem("todos", [
-      { id: 1, text: "공부하기", check: true },
-      { id: 2, text: "운동하기", check: false },
-      { id: 3, text: "샤워하기", check: false },
-      { id: 4, text: "요리하기", check: false },
-    ])
-  );
+  const [todos, setTodos] = useState(() => getItem("todos", []));
 
   useEffect(() => {
     setItem("todos", todos);
@@ -19,11 +12,6 @@ export function useTodos() {
 
   //CREATE
   const addTodo = (text) => {
-    //빈칸 등록
-    if (!text) {
-      alert("할일을 입력해주세요!");
-      return;
-    }
     //중복
     if (todos.some((todo) => todo.text === text)) {
       alert("이미 추가된 일입니다!");

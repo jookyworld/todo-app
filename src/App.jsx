@@ -5,6 +5,17 @@ import { useTodos } from "./hooks/useTodos";
 function App() {
   const { todos, addTodo, removeTodo, toggleTodo } = useTodos();
 
+  const getTodoMessage = () => {
+    const total = todos.length;
+    const done = todos.filter((t) => t.check).length;
+
+    if (total === 0) return "차근차근 ✍️";
+    if (done === 0) return "할 일을 시작해 볼까요? 🔥";
+    if (done < total * 0.5) return "조금 더 분발해볼까요? 💪";
+    if (done < total) return "거의 다 왔어요! 🚀";
+    return "대단해요! 모두 완료했어요! 🥳";
+  };
+
   return (
     <>
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-slate-200 to-slate-400">
@@ -26,9 +37,16 @@ function App() {
               removeTodo={removeTodo}
             />
           </div>
-          <footer className="mt-6 text-sm text-gray-500">
-            총 {todos.length}개의 할 일 중 {todos.filter((t) => t.check).length}
-            개 완료!
+          <footer className="mt-2 text-xs text-gray-500">
+            {todos.length === 0 ? (
+              <span className="text-red-400 font-medium"></span>
+            ) : (
+              <>
+                총 {todos.length}개의 할 일 중{" "}
+                {todos.filter((t) => t.check).length}개 완료!
+              </>
+            )}
+            <p className="mt-4 text-sm text-gray-500">{getTodoMessage()}</p>
           </footer>
         </div>
       </div>
