@@ -1,4 +1,4 @@
-## 리액트 투두 앱 만들기 미션 레포 [AIBE3/5팀/주권영]
+## 리액트 투두 앱
 
 <br>
 
@@ -43,6 +43,3 @@ src/
 ## 스크린샷
 
 <img width="400" height="627" alt="1" src="https://github.com/user-attachments/assets/a09b6bbf-b51e-4c53-95d9-7863ec02f00b" /> <img width="400" height="627" alt="2" src="https://github.com/user-attachments/assets/895fb2a1-139c-496d-85e9-342aee5ad077" /> <img width="400" height="739" alt="3" src="https://github.com/user-attachments/assets/7617a4cb-e9e1-4572-91ae-b2bdb1bf623c" /> <img width="400" height="739" alt="4" src="https://github.com/user-attachments/assets/29d9bf13-d9aa-40ea-90f6-de2a14a8f165" />
-
-
-
