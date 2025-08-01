@@ -5,7 +5,8 @@ import { useTodos } from "./hooks/useTodos";
 import { getTodoMessage } from "./utils/todoMessage";
 
 function App() {
-  const { todos, addTodo, removeTodo, toggleTodo, updateTodo } = useTodos(); //useTodos 훅을 통해 todos 상태와 관련 함수들을 가져옴
+  const { todos, addTodo, removeTodo, toggleTodo, updateTodo, loading } =
+    useTodos(); //useTodos 훅을 통해 todos 상태와 관련 함수들을 가져옴
   const [editingTodo, setEditingTodo] = useState(null);
 
   //하단 메시지
@@ -16,15 +17,15 @@ function App() {
     setEditingTodo(todo);
   };
 
-  const handleAddOrUpdate = (text, startTime, endTime) => {
+  const handleAddOrUpdate = (text, startTime) => {
     if (editingTodo) {
       // 수정 모드
-      updateTodo(editingTodo.id, text, startTime, endTime);
+      updateTodo(editingTodo.id, text, startTime);
       setEditingTodo(null);
       return { success: true };
     } else {
       // 추가 모드
-      return addTodo(text, startTime, endTime);
+      return addTodo(text, startTime);
     }
   };
 
@@ -51,12 +52,18 @@ function App() {
             onCancel={handleCancelEdit}
           />
           <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-inner">
-            <TodoList
-              todos={todos}
-              toggleTodo={toggleTodo}
-              removeTodo={removeTodo}
-              onEdit={handleEdit}
-            />
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <div className="text-gray-500">로딩 중...</div>
+              </div>
+            ) : (
+              <TodoList
+                todos={todos}
+                toggleTodo={toggleTodo}
+                removeTodo={removeTodo}
+                onEdit={handleEdit}
+              />
+            )}
           </div>
           <footer className="mt-2 text-xs text-gray-500">
             {todos.length === 0 ? (

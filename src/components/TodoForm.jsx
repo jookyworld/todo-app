@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function TodoForm({ addTodo, editingTodo, onCancel }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [startTime, setStartTime] = useState({
     hour: "00",
     minute: "00",
@@ -11,8 +12,8 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
   useEffect(() => {
     if (editingTodo) {
       setIsModalOpen(true);
-      if (editingTodo.startTime) {
-        const [hour, minute] = editingTodo.startTime.split(":");
+      if (editingTodo.start_time) {
+        const [hour, minute] = editingTodo.start_time.split(":");
         setStartTime({
           hour: hour,
           minute: minute,
@@ -31,14 +32,21 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
   };
 
   // form(등록버튼) 처리하는 핸들러
-  const Submit = (e) => {
+  const Submit = async (e) => {
     e.preventDefault(); //새로고침 방지
+
+    // 이미 제출 중이면 중복 제출 방지
+    if (isSubmitting) return;
+
     const form = e.target;
     const text = form.todo.value.trim(); // 입력값의 앞뒤 공백 제거
 
     const startTime24 = convertTo24Hour(startTime);
 
-    const result = addTodo(text, startTime24, ""); //addTodo 함수 호출 해서
+    setIsSubmitting(true); // 제출 시작
+    const result = await addTodo(text, startTime24); //addTodo 함수 호출 해서
+    setIsSubmitting(false); // 제출 완료
+
     if (!result.success) {
       //결과
       alert(result.message);
@@ -80,6 +88,7 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
               <button
                 onClick={closeModal}
                 className="text-gray-400 hover:text-gray-600 text-2xl font-bold"
+                disabled={isSubmitting}
               >
                 ×
               </button>
@@ -98,6 +107,7 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
                   placeholder="할 일을 입력해주세요"
                   defaultValue={editingTodo ? editingTodo.text : ""}
                   autoFocus
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -113,6 +123,7 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
                     onChange={(e) =>
                       setStartTime({ ...startTime, hour: e.target.value })
                     }
+                    disabled={isSubmitting}
                   >
                     {[
                       0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
@@ -132,6 +143,7 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
                     onChange={(e) =>
                       setStartTime({ ...startTime, minute: e.target.value })
                     }
+                    disabled={isSubmitting}
                   >
                     {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(
                       (minute) => (
@@ -152,15 +164,17 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
                 >
                   취소
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow hover:shadow-lg hover:from-purple-600 hover:to-indigo-700 transition-all duration-200"
+                  className="flex-1 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow hover:shadow-lg hover:from-purple-600 hover:to-indigo-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
                 >
-                  {editingTodo ? "수정" : "추가"}
+                  {isSubmitting ? "처리 중..." : editingTodo ? "수정" : "추가"}
                 </button>
               </div>
             </form>

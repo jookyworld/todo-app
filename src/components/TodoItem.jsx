@@ -44,10 +44,12 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
       </div>
 
       {/* 시작시간 */}
-      {todo.startTime && (
-        <div className="flex items-center gap-1 text-xs min-w-[80px] ml-4">
-          <span className="text-blue-500">🕐</span>
-          <span className="text-gray-600 font-semibold">{todo.startTime}</span>
+      {todo.start_time && (
+        <div className="flex items-center gap-2 text-sm min-w-[100px] ml-4">
+          <span className="text-blue-500 text-base">🕐</span>
+          <span className="text-gray-700 font-semibold text-sm">
+            {todo.start_time}
+          </span>
         </div>
       )}
 
