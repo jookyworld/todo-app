@@ -43,7 +43,7 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
   return (
     <li
       className={
-        `flex flex-wrap sm:flex-nowrap items-center justify-between px-4 py-3 border-b break-words w-full ` +
+        `flex flex-wrap sm:flex-nowrap items-center justify-between px-4 py-1.5 border-b break-words w-full ` +
         getTimeBgClass(todo.start_time)
       }
     >
@@ -59,13 +59,13 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
 
       {/* 시간 */}
       {todo.start_time && (
-        <div className="flex items-center gap-1.5 text-sm min-w-[80px] ml-3">
-          <span className="text-blue-500 text-base">🕐</span>
-          <span className="text-gray-600 font-semibold text-sm">
+        <div className="flex flex-col items-center justify-center min-w-[40px] mx-1">
+          <span className="text-[11px] text-gray-600 font-semibold leading-tight">
             {todo.start_time}
           </span>
-          <span className="text-gray-600 font-semibold text-sm">
-            {todo.end_time ? `~ ${todo.end_time}` : ""}
+          <span className="text-[10px] text-gray-500 leading-none">~</span>
+          <span className="text-[11px] text-gray-600 font-semibold leading-tight">
+            {todo.end_time}
           </span>
         </div>
       )}
