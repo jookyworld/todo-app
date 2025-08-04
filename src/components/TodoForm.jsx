@@ -84,10 +84,10 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
   return (
     <>
       {/* 할일 추가 버튼 */}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-3">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-6 py-3 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow-lg hover:shadow-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105"
+          className="px-3.5 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold shadow-lg hover:shadow-xl hover:from-purple-600 hover:to-indigo-700 transition-all duration-200 transform hover:scale-105"
         >
           + 할일 추가
         </button>
