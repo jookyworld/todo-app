@@ -65,7 +65,7 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
             {todo.start_time}
           </span>
           <span className="text-gray-600 font-semibold text-sm">
-            {todo.end_time}
+            {todo.end_time ? `~ ${todo.end_time}` : ""}
           </span>
         </div>
       )}
