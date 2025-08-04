@@ -17,15 +17,15 @@ function App() {
     setEditingTodo(todo);
   };
 
-  const handleAddOrUpdate = (text, startTime) => {
+  const handleAddOrUpdate = (text, startTime, endTime) => {
     if (editingTodo) {
       // 수정 모드
-      updateTodo(editingTodo.id, text, startTime);
+      updateTodo(editingTodo.id, text, startTime, endTime);
       setEditingTodo(null);
       return { success: true };
     } else {
       // 추가 모드
-      return addTodo(text, startTime);
+      return addTodo(text, startTime, endTime);
     }
   };
 
@@ -37,19 +37,19 @@ function App() {
     //UI 렌더링
     <>
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-slate-200 to-slate-400">
-        <div className="bg-white rounded-xl shadow-xl border border-gray-200 text-center flex flex-col max-w-xl w-full max-h-[90vh] overflow-y-auto mx-2 overflow-x-hidden">
+        <div className="bg-white rounded-xl shadow-xl border border-gray-200 text-center flex flex-col max-w-xl w-full max-h-[95vh] mx-2 overflow-x-hidden">
           {/* 고정 헤더 */}
           <header className="mb-0 p-4 pb-0 sm:p-6 sm:pb-0">
             <h1 className="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
               To Do
             </h1>
-            <p className="mt-2 text-lg sm:text-xl font-extrabold italic bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
+            <p className="text-lg sm:text-xl font-extrabold italic bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
               Do What You Do
             </p>
           </header>
 
           {/* 할일 추가 폼 */}
-          <div className="px-2 pt-4 mb-4 sm:px-8 sm:pt-6 sm:mb-6">
+          <div className="px-2 pt-1 mb-4 sm:px-8 sm:pt-6 sm:mb-6">
             <TodoForm
               addTodo={handleAddOrUpdate}
               editingTodo={editingTodo}
@@ -58,7 +58,7 @@ function App() {
           </div>
 
           {/* 할일 리스트 */}
-          <div className="px-2 sm:px-8">
+          <div className="flex-grow min-h-0 overflow-y-auto px-2 sm:px-8">
             <div className="bg-gray-50 p-2 sm:p-4 rounded-lg shadow-inner">
               {loading ? (
                 <div className="flex justify-center items-center py-8">
@@ -76,7 +76,7 @@ function App() {
           </div>
 
           {/* 고정 푸터 */}
-          <footer className="mt-2 text-xs text-gray-500 p-4 pt-2 sm:p-8 sm:pt-4">
+          <footer className="mt-1 text-xs text-gray-500 p-4 pt-2 sm:p-8 sm:pt-4">
             {todos.length === 0 ? (
               <span className="text-red-400 font-medium"></span>
             ) : (
@@ -85,7 +85,7 @@ function App() {
                 {todos.filter((t) => t.check).length}개 완료!
               </>
             )}
-            <p className="mt-4 text-sm text-gray-500">
+            <p className="mt-3 text-sm text-gray-500">
               {getTodoMessage(total, done)}
             </p>
           </footer>

@@ -1,5 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
+function getTimeBgClass(startTime) {
+  if (!startTime) return "bg-white";
+  const hour = parseInt(startTime.slice(0, 2), 10);
+  if (hour >= 6 && hour < 12) return "bg-yellow-50 bg-opacity-50"; // 06~11시
+  if (hour >= 12 && hour < 18) return "bg-red-50 bg-opacity-50"; // 12~17시
+  // 18~23시 또는 0~5시
+  return "bg-blue-50 bg-opacity-50";
+}
+
 function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
   const [showOptions, setShowOptions] = useState(false);
   const optionsRef = useRef(null);
@@ -32,7 +41,12 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
   };
 
   return (
-    <li className="flex flex-wrap sm:flex-nowrap items-center justify-between px-4 py-3 border-b break-words w-full">
+    <li
+      className={
+        `flex flex-wrap sm:flex-nowrap items-center justify-between px-4 py-3 border-b break-words w-full ` +
+        getTimeBgClass(todo.start_time)
+      }
+    >
       {/* 완료 체크 - 맨 왼쪽 */}
       <div className="flex items-center gap-2">
         <input
@@ -43,12 +57,15 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
         />
       </div>
 
-      {/* 시작시간 */}
+      {/* 시간 */}
       {todo.start_time && (
         <div className="flex items-center gap-1.5 text-sm min-w-[80px] ml-3">
           <span className="text-blue-500 text-base">🕐</span>
-          <span className="text-gray-700 font-semibold text-sm">
+          <span className="text-gray-600 font-semibold text-sm">
             {todo.start_time}
+          </span>
+          <span className="text-gray-600 font-semibold text-sm">
+            {todo.end_time}
           </span>
         </div>
       )}

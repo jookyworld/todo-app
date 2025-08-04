@@ -32,7 +32,7 @@ export function useTodos() {
     loadTodos();
   }, []);
 
-  const addTodo = async (text, startTime) => {
+  const addTodo = async (text, startTime, endTime) => {
     //빈 제출 검증
     if (!text) {
       return { success: false, message: "할 일을 입력해주세요!" };
@@ -49,6 +49,7 @@ export function useTodos() {
           {
             text,
             start_time: startTime,
+            end_time: endTime,
             check: false,
           },
         ])
@@ -134,13 +135,18 @@ export function useTodos() {
   };
 
   //UPDATE - 할일 수정
-  const updateTodo = async (todoId, newText, newStartTime) => {
+  const updateTodo = async (todoId, newText, newStartTime, newEndTime) => {
     try {
       // 로컬 상태 먼저 업데이트 (즉시 반응)
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo.id === todoId
-            ? { ...todo, text: newText, start_time: newStartTime }
+            ? {
+                ...todo,
+                text: newText,
+                start_time: newStartTime,
+                end_time: newEndTime,
+              }
             : todo
         )
       );
@@ -151,6 +157,7 @@ export function useTodos() {
         .update({
           text: newText,
           start_time: newStartTime,
+          end_time: newEndTime,
         })
         .eq("id", todoId);
 
@@ -174,7 +181,22 @@ export function useTodos() {
     if (!a.start_time) return -1;
     if (!b.start_time) return 1;
 
-    // 시작시간이 있는 할일들은 시간 순으로 정렬
+    // 00~05시 시작시간이면 맨 아래로
+    const getHour = (time) => {
+      if (!time) return 99;
+      const hour = parseInt(time.slice(0, 2), 10);
+      return hour;
+    };
+    const aHour = getHour(a.start_time);
+    const bHour = getHour(b.start_time);
+
+    const aIsEarly = aHour >= 0 && aHour <= 5;
+    const bIsEarly = bHour >= 0 && bHour <= 5;
+
+    if (aIsEarly && !bIsEarly) return 1; // a가 00~05, b는 아님 → a가 아래로
+    if (!aIsEarly && bIsEarly) return -1; // b가 00~05, a는 아님 → b가 아래로
+
+    // 둘 다 00~05이거나 둘 다 아님 → 기존 시간순 정렬
     return a.start_time.localeCompare(b.start_time);
   });
 

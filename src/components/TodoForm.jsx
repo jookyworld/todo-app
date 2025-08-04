@@ -7,6 +7,10 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
     hour: "00",
     minute: "00",
   });
+  const [endTime, setEndTime] = useState({
+    hour: "00",
+    minute: "00",
+  });
 
   // 수정 모드일 때 기존 데이터로 초기화
   useEffect(() => {
@@ -20,6 +24,15 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
         });
       } else {
         setStartTime({ hour: "00", minute: "00" });
+      }
+      if (editingTodo.end_time) {
+        const [hour, minute] = editingTodo.end_time.split(":");
+        setEndTime({
+          hour: hour,
+          minute: minute,
+        });
+      } else {
+        setEndTime({ hour: "00", minute: "00" });
       }
     }
   }, [editingTodo]);
@@ -42,9 +55,10 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
     const text = form.todo.value.trim(); // 입력값의 앞뒤 공백 제거
 
     const startTime24 = convertTo24Hour(startTime);
+    const endTime24 = convertTo24Hour(endTime);
 
     setIsSubmitting(true); // 제출 시작
-    const result = await addTodo(text, startTime24); //addTodo 함수 호출 해서
+    const result = await addTodo(text, startTime24, endTime24); //addTodo 함수 호출 해서
     setIsSubmitting(false); // 제출 완료
 
     if (!result.success) {
@@ -54,12 +68,14 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
     }
     form.todo.value = ""; // 입력 후 입력창 비우기
     setStartTime({ hour: "00", minute: "00" });
+    setEndTime({ hour: "00", minute: "00" });
     setIsModalOpen(false); // 모달 닫기
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
     setStartTime({ hour: "00", minute: "00" });
+    setEndTime({ hour: "00", minute: "00" });
     if (editingTodo) {
       onCancel();
     }
@@ -113,49 +129,95 @@ function TodoForm({ addTodo, editingTodo, onCancel }) {
 
               {/* 시간 입력 */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  시작시간
-                </label>
-                <div className="flex gap-2">
-                  <select
-                    className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
-                    value={startTime.hour}
-                    onChange={(e) =>
-                      setStartTime({ ...startTime, hour: e.target.value })
-                    }
-                    disabled={isSubmitting}
-                  >
-                    {[
-                      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                      17, 18, 19, 20, 21, 22, 23,
-                    ].map((hour) => (
-                      <option
-                        key={hour}
-                        value={hour.toString().padStart(2, "0")}
+                <div className="flex justify-between gap-4">
+                  {/* 시작시간 */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      시작시간
+                    </label>
+                    <div className="flex gap-2">
+                      <select
+                        className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
+                        value={startTime.hour}
+                        onChange={(e) =>
+                          setStartTime({ ...startTime, hour: e.target.value })
+                        }
+                        disabled={isSubmitting}
                       >
-                        {hour.toString().padStart(2, "0")} 시
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
-                    value={startTime.minute}
-                    onChange={(e) =>
-                      setStartTime({ ...startTime, minute: e.target.value })
-                    }
-                    disabled={isSubmitting}
-                  >
-                    {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(
-                      (minute) => (
-                        <option
-                          key={minute}
-                          value={minute.toString().padStart(2, "0")}
-                        >
-                          {minute.toString().padStart(2, "0")} 분
-                        </option>
-                      )
-                    )}
-                  </select>
+                        {[...Array(24).keys()].map((hour) => (
+                          <option
+                            key={hour}
+                            value={hour.toString().padStart(2, "0")}
+                          >
+                            {hour.toString().padStart(2, "0")} 시
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
+                        value={startTime.minute}
+                        onChange={(e) =>
+                          setStartTime({ ...startTime, minute: e.target.value })
+                        }
+                        disabled={isSubmitting}
+                      >
+                        {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(
+                          (minute) => (
+                            <option
+                              key={minute}
+                              value={minute.toString().padStart(2, "0")}
+                            >
+                              {minute.toString().padStart(2, "0")} 분
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+                  </div>
+                  {/* 종료시간 */}
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      종료시간
+                    </label>
+                    <div className="flex gap-2">
+                      <select
+                        className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
+                        value={endTime.hour}
+                        onChange={(e) =>
+                          setEndTime({ ...endTime, hour: e.target.value })
+                        }
+                        disabled={isSubmitting}
+                      >
+                        {[...Array(24).keys()].map((hour) => (
+                          <option
+                            key={hour}
+                            value={hour.toString().padStart(2, "0")}
+                          >
+                            {hour.toString().padStart(2, "0")} 시
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none transition-colors bg-gray-50"
+                        value={endTime.minute}
+                        onChange={(e) =>
+                          setEndTime({ ...endTime, minute: e.target.value })
+                        }
+                        disabled={isSubmitting}
+                      >
+                        {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55].map(
+                          (minute) => (
+                            <option
+                              key={minute}
+                              value={minute.toString().padStart(2, "0")}
+                            >
+                              {minute.toString().padStart(2, "0")} 분
+                            </option>
+                          )
+                        )}
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
 
