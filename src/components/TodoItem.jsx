@@ -32,7 +32,7 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
   };
 
   return (
-    <li className="flex items-center justify-between px-4 py-3 border-b">
+    <li className="flex flex-wrap sm:flex-nowrap items-center justify-between px-4 py-3 border-b break-words w-full">
       {/* 완료 체크 - 맨 왼쪽 */}
       <div className="flex items-center gap-2">
         <input
@@ -54,7 +54,7 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
       )}
 
       {/* 할일 텍스트 - 중앙 */}
-      <div className="flex-1 px-4">
+      <div className="flex-1 px-2 break-words min-w-0">
         <span className={todo.check ? "line-through text-gray-400" : ""}>
           {todo.text}
         </span>

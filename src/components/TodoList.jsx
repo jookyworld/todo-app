@@ -2,7 +2,7 @@ import TodoItem from "./TodoItem";
 
 function TodoList({ todos, toggleTodo, removeTodo, onEdit }) {
   return (
-    <ul className="min-w-[400px]">
+    <ul className="w-full min-w-0 break-words">
       {todos.map((todo) => (
         <TodoItem
           key={todo.id}

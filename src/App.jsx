@@ -37,9 +37,9 @@ function App() {
     //UI 렌더링
     <>
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-slate-200 to-slate-400">
-        <div className="bg-white rounded-xl shadow-xl border border-gray-200 text-center flex flex-col w-full max-w-xl max-h-[90vh] overflow-y-auto mx-2">
+        <div className="bg-white rounded-xl shadow-xl border border-gray-200 text-center flex flex-col max-w-xl w-full max-h-[90vh] overflow-y-auto mx-2 overflow-x-hidden">
           {/* 고정 헤더 */}
-          <header className="mb-6 p-4 pb-2 sm:p-8 sm:pb-4">
+          <header className="mb-0 p-4 pb-0 sm:p-6 sm:pb-0">
             <h1 className="text-3xl sm:text-5xl font-extrabold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
               To Do
             </h1>
@@ -49,7 +49,7 @@ function App() {
           </header>
 
           {/* 할일 추가 폼 */}
-          <div className="px-2 pb-2 sm:px-8 sm:pb-4">
+          <div className="px-2 pt-4 mb-4 sm:px-8 sm:pt-6 sm:mb-6">
             <TodoForm
               addTodo={handleAddOrUpdate}
               editingTodo={editingTodo}
