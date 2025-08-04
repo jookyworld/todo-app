@@ -37,8 +37,9 @@ function App() {
     //UI 렌더링
     <>
       <div className="h-screen flex justify-center items-center bg-gradient-to-br from-slate-200 to-slate-400">
-        <div className="bg-white p-8 rounded-xl shadow-xl border border-gray-200 text-center">
-          <header className="mb-6">
+        <div className="bg-white rounded-xl shadow-xl border border-gray-200 text-center flex flex-col w-full max-w-xl max-h-[90vh] overflow-y-auto">
+          {/* 고정 헤더 */}
+          <header className="mb-6 p-8 pb-4">
             <h1 className="text-5xl font-extrabold bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 text-transparent bg-clip-text drop-shadow-lg tracking-tight">
               To Do
             </h1>
@@ -46,26 +47,36 @@ function App() {
               Do What You Do
             </p>
           </header>
-          <TodoForm
-            addTodo={handleAddOrUpdate}
-            editingTodo={editingTodo}
-            onCancel={handleCancelEdit}
-          />
-          <div className="mt-6 bg-gray-50 p-4 rounded-lg shadow-inner">
-            {loading ? (
-              <div className="flex justify-center items-center py-8">
-                <div className="text-gray-500">로딩 중...</div>
-              </div>
-            ) : (
-              <TodoList
-                todos={todos}
-                toggleTodo={toggleTodo}
-                removeTodo={removeTodo}
-                onEdit={handleEdit}
-              />
-            )}
+
+          {/* 할일 추가 폼 */}
+          <div className="px-8 pb-4">
+            <TodoForm
+              addTodo={handleAddOrUpdate}
+              editingTodo={editingTodo}
+              onCancel={handleCancelEdit}
+            />
           </div>
-          <footer className="mt-2 text-xs text-gray-500">
+
+          {/* 할일 리스트 */}
+          <div className="px-8">
+            <div className="bg-gray-50 p-4 rounded-lg shadow-inner">
+              {loading ? (
+                <div className="flex justify-center items-center py-8">
+                  <div className="text-gray-500">로딩 중...</div>
+                </div>
+              ) : (
+                <TodoList
+                  todos={todos}
+                  toggleTodo={toggleTodo}
+                  removeTodo={removeTodo}
+                  onEdit={handleEdit}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* 고정 푸터 */}
+          <footer className="mt-2 text-xs text-gray-500 p-8 pt-4">
             {todos.length === 0 ? (
               <span className="text-red-400 font-medium"></span>
             ) : (
