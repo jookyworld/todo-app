@@ -59,7 +59,7 @@ function TodoItem({ todo, toggleTodo, removeTodo, onEdit }) {
 
       {/* 시간 */}
       {todo.start_time && (
-        <div className="flex flex-col items-center justify-center min-w-[40px] mx-1">
+        <div className="flex flex-col items-center justify-center min-w-[40px] mx-2">
           <span className="text-[11px] text-gray-600 font-semibold leading-tight">
             {todo.start_time}
           </span>
